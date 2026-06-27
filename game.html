@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic page setup -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Free Water Gameplay</title>
+
+  <!-- CSS file -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <div class="gameplay-page">
+
+    <!-- Gameplay header -->
+    <header class="gameplay-header">
+
+      <!-- Home button -->
+      <a href="index.html" class="back-home-button">
+        Home
+      </a>
+
+      <!-- Water unlocked meter -->
+      <div class="gameplay-status">
+
+        <p class="gameplay-label">Water Unlocked</p>
+
+        <div class="gameplay-meter">
+          <div id="gameWaterFill" class="game-water-fill"></div>
+          <span id="gameWaterText">0 Gallons</span>
+        </div>
+
+      </div>
+
+    </header>
+
+    <!-- Gameplay scene only -->
+    <main class="gameplay-scene" id="gameScene">
+
+      <!-- Smaller realistic sun -->
+      <div class="scene-sun">
+        <span class="sun-ring"></span>
+        <span class="sun-center"></span>
+      </div>
+
+      <!-- Clouds -->
+      <div class="scene-cloud cloud-left"></div>
+      <div class="scene-cloud cloud-middle"></div>
+      <div class="scene-cloud cloud-right"></div>
+
+      <!-- Village / land background -->
+      <div class="village-ground"></div>
+
+      <!-- People standing on land -->
+      <div class="people-row" id="villagers">
+
+        <div class="african-person person-a">
+          <div class="person-hair hair-round"></div>
+          <div class="person-face"></div>
+          <div class="person-eye eye-left"></div>
+          <div class="person-eye eye-right"></div>
+          <div class="person-mouth"></div>
+          <div class="person-neck"></div>
+          <div class="person-shirt shirt-red"></div>
+          <div class="person-wrap wrap-green"></div>
+          <div class="person-arm arm-left"></div>
+          <div class="person-arm arm-right"></div>
+          <div class="person-leg leg-left"></div>
+          <div class="person-leg leg-right"></div>
+        </div>
+
+        <div class="african-person person-b">
+          <div class="person-hair hair-puffs"></div>
+          <div class="person-face"></div>
+          <div class="person-eye eye-left"></div>
+          <div class="person-eye eye-right"></div>
+          <div class="person-mouth"></div>
+          <div class="person-neck"></div>
+          <div class="person-shirt shirt-blue"></div>
+          <div class="person-wrap wrap-orange"></div>
+          <div class="person-arm arm-left"></div>
+          <div class="person-arm arm-right"></div>
+          <div class="person-leg leg-left"></div>
+          <div class="person-leg leg-right"></div>
+        </div>
+
+        <div class="african-person person-c">
+          <div class="person-hair hair-flat"></div>
+          <div class="person-face"></div>
+          <div class="person-eye eye-left"></div>
+          <div class="person-eye eye-right"></div>
+          <div class="person-mouth"></div>
+          <div class="person-neck"></div>
+          <div class="person-shirt shirt-yellow"></div>
+          <div class="person-wrap wrap-pattern"></div>
+          <div class="person-arm arm-left"></div>
+          <div class="person-arm arm-right"></div>
+          <div class="person-leg leg-left"></div>
+          <div class="person-leg leg-right"></div>
+        </div>
+
+      </div>
+
+      <!-- Bigger dirty water section -->
+      <section class="dirty-water-section" id="pondArea">
+
+        <!-- Animated surface waves -->
+        <div class="water-surface-line"></div>
+        <div class="water-surface-line surface-two"></div>
+
+        <div class="dirty-water-fill">
+
+          <!-- Realistic water shine -->
+          <span class="water-highlight water-highlight-one"></span>
+          <span class="water-highlight water-highlight-two"></span>
+          <span class="water-highlight water-highlight-three"></span>
+
+          <!-- Dirt / mud -->
+          <span class="game-dirt game-dirt-one"></span>
+          <span class="game-dirt game-dirt-two"></span>
+          <span class="game-dirt game-dirt-three"></span>
+          <span class="game-dirt game-dirt-four"></span>
+          <span class="game-dirt game-dirt-five"></span>
+
+          <!-- Germs -->
+          <span class="game-germ game-germ-one"></span>
+          <span class="game-germ game-germ-two"></span>
+          <span class="game-germ game-germ-three"></span>
+          <span class="game-germ game-germ-four"></span>
+
+          <!-- Worms -->
+          <span class="game-worm game-worm-one"></span>
+          <span class="game-worm game-worm-two"></span>
+          <span class="game-worm game-worm-three"></span>
+
+          <!-- Clean sparkles appear later -->
+          <span class="clean-sparkle sparkle-one"></span>
+          <span class="clean-sparkle sparkle-two"></span>
+          <span class="clean-sparkle sparkle-three"></span>
+
+        </div>
+
+      </section>
+
+      <!-- Fireworks celebration -->
+      <div class="fireworks" id="fireworks">
+        <span class="firework firework-one"></span>
+        <span class="firework firework-two"></span>
+        <span class="firework firework-three"></span>
+        <span class="firework firework-four"></span>
+      </div>
+
+    </main>
+
+    <!-- Question card is outside the scene -->
+    <section class="gameplay-question-area">
+
+      <div class="question-panel" id="questionPanel">
+
+        <p class="question-count" id="questionCount">
+          Question 1 of 3
+        </p>
+
+        <h1 id="questionText">
+          The water has visible dirt and mud. What should the team use first?
+        </h1>
+
+        <div class="answer-grid">
+
+          <button type="button" class="answer-button answer-one" onclick="selectAnswer(0)">
+            Boiling Pot
+          </button>
+
+          <button type="button" class="answer-button answer-two" onclick="selectAnswer(1)">
+            Sand Filter
+          </button>
+
+          <button type="button" class="answer-button answer-three" onclick="selectAnswer(2)">
+            Open Bucket
+          </button>
+
+        </div>
+
+        <p class="feedback-text" id="feedbackText">
+          Choose the best solution.
+        </p>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- JavaScript file -->
+  <script src="script.js"></script>
+</body>
+</html>

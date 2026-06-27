@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic page setup -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Free Water</title>
+
+  <!-- CSS file -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- Full home page -->
+  <div class="home-page">
+
+    <!-- Yellow top navigation/status bar -->
+    <header class="top-nav">
+
+      <!-- Level circle -->
+      <div class="level-circle">
+        <span id="levelNumber">0</span>
+      </div>
+
+      <!-- Water unlocked meter -->
+      <div class="water-box">
+
+        <p class="water-label">Water Unlocked</p>
+
+        <div class="water-meter">
+
+          <!-- Water fill controlled by JavaScript -->
+          <div id="waterFill" class="water-fill"></div>
+
+          <!-- Extra animated clean water shimmer -->
+          <div class="meter-water-motion"></div>
+
+          <!-- Gallons unlocked text -->
+          <span id="waterText" class="water-text">0 Gallons</span>
+
+        </div>
+      </div>
+
+    </header>
+
+    <!-- Full underground dirty water hero area -->
+    <main class="hero-area" id="waterBarrel">
+
+      <!-- Top dirt layer -->
+      <div class="soil-layer"></div>
+
+      <!-- Underground dirty water layer -->
+      <div class="underground-water">
+        <div class="water-wave wave-one"></div>
+        <div class="water-wave wave-two"></div>
+        <div class="water-shine shine-one"></div>
+        <div class="water-shine shine-two"></div>
+        <div class="water-shine shine-three"></div>
+      </div>
+
+      <!-- Dirt pieces -->
+      <span class="dirt dirt-one"></span>
+      <span class="dirt dirt-two"></span>
+      <span class="dirt dirt-three"></span>
+      <span class="dirt dirt-four"></span>
+      <span class="dirt dirt-five"></span>
+      <span class="dirt dirt-six"></span>
+      <span class="dirt dirt-seven"></span>
+      <span class="dirt dirt-eight"></span>
+
+      <!-- Bacteria pieces -->
+      <span class="bacteria bacteria-one"></span>
+      <span class="bacteria bacteria-two"></span>
+      <span class="bacteria bacteria-three"></span>
+      <span class="bacteria bacteria-four"></span>
+      <span class="bacteria bacteria-five"></span>
+      <span class="bacteria bacteria-six"></span>
+      <span class="bacteria bacteria-seven"></span>
+
+      <!-- Worm pieces -->
+      <span class="worm worm-one"></span>
+      <span class="worm worm-two"></span>
+      <span class="worm worm-three"></span>
+      <span class="worm worm-four"></span>
+      <span class="worm worm-five"></span>
+      <span class="worm worm-six"></span>
+
+      <!-- Start game button -->
+      <a href="game.html" class="save-lives-button">
+        Save Lives
+      </a>
+
+    </main>
+
+    <!-- Yellow footer -->
+    <footer class="footer-bar">
+
+      <!-- Left charity water inspired badge -->
+      <div class="footer-brand footer-brand-left">
+        <div class="brand-icon water-can-icon">
+          <span class="can-handle"></span>
+          <span class="can-spout"></span>
+        </div>
+
+        <div class="brand-words">
+          <span>CHARITY</span>
+          <strong>WATER</strong>
+        </div>
+      </div>
+
+      <!-- Right charity water inspired badge -->
+      <div class="footer-brand footer-brand-right">
+        <div class="brand-circle">
+          <span>CLEAN</span>
+          <strong>WATER</strong>
+        </div>
+
+        <div class="brand-words right-words">
+          <span>CHARITY</span>
+          <strong>WATER</strong>
+        </div>
+      </div>
+
+    </footer>
+
+  </div>
+
+  <!-- JavaScript file -->
+  <script src="script.js"></script>
+</body>
+</html>
