@@ -1,8 +1,12 @@
 // ===============================
-// SAVED GAME DATA
+// FREE WATER GAME SCRIPT
 // ===============================
 
 console.log("script.js is connected");
+
+// ===============================
+// SAVED GAME DATA
+// ===============================
 
 let savedWater = localStorage.getItem("waterUnlocked");
 let savedLevel = localStorage.getItem("playerLevel");
@@ -10,10 +14,10 @@ let savedLevel = localStorage.getItem("playerLevel");
 let waterUnlocked = savedWater ? Number(savedWater) : 0;
 let playerLevel = savedLevel ? Number(savedLevel) : 0;
 
-// Check if this is the gameplay page
+// Check what page we are on
 const isGameplayPage = document.querySelector(".gameplay-page") !== null;
 
-// Start the gameplay mission fresh each time the player enters game.html
+// Start gameplay fresh every time game.html opens
 if (isGameplayPage) {
   waterUnlocked = 0;
 }
@@ -51,26 +55,27 @@ const questions = [
     question: "The water has visible dirt and mud. What should the team use first?",
     answers: ["Boiling Pot", "Sand Filter", "Open Bucket"],
     correctAnswer: "Sand Filter",
-    feedback: "Correct. A sand filter helps remove dirt and mud from the water.",
+    feedback: "Correct! A sand filter removes dirt and mud from the water.",
     gallonsEarned: 35
   },
   {
     question: "The water looks clearer, but germs may still be inside. What should the team use next?",
     answers: ["Chlorine Tablets", "More Dirt", "Broken Pipe"],
     correctAnswer: "Chlorine Tablets",
-    feedback: "Correct. Chlorine tablets help kill harmful germs in the water.",
+    feedback: "Correct! Chlorine tablets help kill harmful germs in the water.",
     gallonsEarned: 35
   },
   {
-    question: "The water is clean now. What helps keep it safe for families?",
+    question: "The water is clean now. What keeps it safe for families to drink later?",
     answers: ["Open Bowl", "Covered Container", "Dirty Hands"],
     correctAnswer: "Covered Container",
-    feedback: "Correct. A covered container keeps clean water protected.",
+    feedback: "Correct! A covered container keeps clean water safe.",
     gallonsEarned: 30
   }
 ];
 
 let currentQuestionIndex = 0;
+let correctAnswers = 0;
 let waitingForNextQuestion = false;
 
 // ===============================
@@ -115,6 +120,14 @@ function updateGameplayMeter() {
     return;
   }
 
+  if (waterUnlocked < 0) {
+    waterUnlocked = 0;
+  }
+
+  if (waterUnlocked > 100) {
+    waterUnlocked = 100;
+  }
+
   let visibleWaterAmount = waterUnlocked === 0 ? 12 : waterUnlocked;
 
   gameWaterFill.style.width = visibleWaterAmount + "%";
@@ -141,6 +154,9 @@ function loadQuestion() {
     button.style.display = "block";
     button.classList.remove("correct-choice");
     button.classList.remove("wrong-choice");
+
+    // Store the answer number on the button
+    button.dataset.answerIndex = index;
   });
 }
 
@@ -165,11 +181,22 @@ function updateSceneProgress() {
   if (waterUnlocked >= 100) {
     pondArea.classList.add("cleaning-three");
     villagers.classList.add("celebrating");
-
-    playerLevel = 1;
-    saveProgress();
-    showFireworks();
   }
+}
+
+function makePeopleCheerQuickly() {
+  if (!villagers) {
+    return;
+  }
+
+  villagers.classList.add("celebrating");
+
+  setTimeout(function() {
+    if (waterUnlocked < 100) {
+      villagers.classList.remove("celebrating");
+      updateSceneProgress();
+    }
+  }, 900);
 }
 
 function shakeQuestionPanel() {
@@ -207,11 +234,11 @@ function goToNextQuestion() {
 // ===============================
 
 function selectAnswer(answerIndex) {
-  if (waitingForNextQuestion) {
+  if (!isGameplayPage) {
     return;
   }
 
-  if (!isGameplayPage) {
+  if (waitingForNextQuestion) {
     return;
   }
 
@@ -225,8 +252,11 @@ function selectAnswer(answerIndex) {
     button.disabled = true;
   });
 
+  // CORRECT ANSWER
   if (selectedAnswer === currentQuestion.correctAnswer) {
     selectedButton.classList.add("correct-choice");
+
+    correctAnswers++;
 
     waterUnlocked += currentQuestion.gallonsEarned;
 
@@ -239,22 +269,27 @@ function selectAnswer(answerIndex) {
     saveProgress();
     updateGameplayMeter();
     updateSceneProgress();
+    makePeopleCheerQuickly();
 
     setTimeout(function() {
       goToNextQuestion();
-    }, 1300);
+    }, 1400);
 
-  } else {
-    selectedButton.classList.add("wrong-choice");
-
-    feedbackText.textContent = "Wrong choice. The mission continues to the next problem.";
-
-    shakeQuestionPanel();
-
-    setTimeout(function() {
-      goToNextQuestion();
-    }, 1100);
+    return;
   }
+
+  // WRONG ANSWER
+  selectedButton.classList.add("wrong-choice");
+  feedbackText.textContent = "Wrong choice. The water stays the same. Moving to the next problem.";
+
+  // Water does NOT change here
+  updateGameplayMeter();
+  updateSceneProgress();
+  shakeQuestionPanel();
+
+  setTimeout(function() {
+    goToNextQuestion();
+  }, 1200);
 }
 
 function finishGame() {
@@ -262,24 +297,43 @@ function finishGame() {
     return;
   }
 
-  if (waterUnlocked >= 100) {
-    questionCount.textContent = "Mission Complete";
-    questionText.textContent = "The water is clean and the community is celebrating!";
-    feedbackText.textContent = "You unlocked 100 gallons of clean water.";
-    showFireworks();
-  } else {
-    questionCount.textContent = "Mission Finished";
-    questionText.textContent = "You helped the team, but the water is not fully clean yet.";
-    feedbackText.textContent = "Try again and choose the strongest water solutions.";
-  }
-
   answerButtons.forEach(function(button) {
     button.style.display = "none";
   });
+
+  // Player got all 3 correct
+  if (correctAnswers === 3) {
+    waterUnlocked = 100;
+    playerLevel = 1;
+
+    saveProgress();
+    updateGameplayMeter();
+    updateSceneProgress();
+    showFireworks();
+
+    questionCount.textContent = "Mission Complete";
+    questionText.textContent = "You cleaned the water and saved the community!";
+    feedbackText.textContent = "Perfect score! You unlocked 100 gallons of clean water.";
+
+    return;
+  }
+
+  // Player missed at least one
+  questionCount.textContent = "Mission Finished";
+  questionText.textContent = "You helped the team, but the water is not fully clean yet.";
+  feedbackText.textContent = "You got " + correctAnswers + " out of 3 correct. Try again to fully clean the water.";
 }
 
-// This makes selectAnswer available to the HTML onclick buttons
+// Make selectAnswer available to the buttons in game.html
 window.selectAnswer = selectAnswer;
+
+// Also add direct click listeners as a backup
+answerButtons.forEach(function(button) {
+  button.addEventListener("click", function() {
+    const answerIndex = Number(button.dataset.answerIndex);
+    selectAnswer(answerIndex);
+  });
+});
 
 // ===============================
 // HOME PAGE HOVER
