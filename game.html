@@ -23,6 +23,23 @@
         Home
       </a>
 
+      <!-- Small difficulty selector -->
+      <div class="difficulty-mini">
+        <span>Mode:</span>
+
+        <button type="button" class="difficulty-mini-button active-difficulty" data-difficulty="easy">
+          Easy
+        </button>
+
+        <button type="button" class="difficulty-mini-button" data-difficulty="normal">
+          Normal
+        </button>
+
+        <button type="button" class="difficulty-mini-button" data-difficulty="hard">
+          Hard
+        </button>
+      </div>
+
       <!-- Water unlocked meter -->
       <div class="gameplay-status">
 
@@ -37,10 +54,10 @@
 
     </header>
 
-    <!-- Gameplay scene only -->
+    <!-- Gameplay scene -->
     <main class="gameplay-scene" id="gameScene">
 
-      <!-- Smaller realistic sun -->
+      <!-- Sun -->
       <div class="scene-sun">
         <span class="sun-ring"></span>
         <span class="sun-center"></span>
@@ -104,7 +121,7 @@
 
       </div>
 
-      <!-- Bigger dirty water section -->
+      <!-- Dirty water section -->
       <section class="dirty-water-section" id="pondArea">
 
         <!-- Animated surface waves -->
@@ -119,22 +136,22 @@
           <span class="water-highlight water-highlight-three"></span>
 
           <!-- Dirt / mud -->
-          <span class="game-dirt game-dirt-one"></span>
-          <span class="game-dirt game-dirt-two"></span>
-          <span class="game-dirt game-dirt-three"></span>
-          <span class="game-dirt game-dirt-four"></span>
-          <span class="game-dirt game-dirt-five"></span>
+          <span class="game-dirt game-dirt-one dirty-object"></span>
+          <span class="game-dirt game-dirt-two dirty-object"></span>
+          <span class="game-dirt game-dirt-three dirty-object"></span>
+          <span class="game-dirt game-dirt-four dirty-object"></span>
+          <span class="game-dirt game-dirt-five dirty-object"></span>
 
           <!-- Germs -->
-          <span class="game-germ game-germ-one"></span>
-          <span class="game-germ game-germ-two"></span>
-          <span class="game-germ game-germ-three"></span>
-          <span class="game-germ game-germ-four"></span>
+          <span class="game-germ game-germ-one dirty-object"></span>
+          <span class="game-germ game-germ-two dirty-object"></span>
+          <span class="game-germ game-germ-three dirty-object"></span>
+          <span class="game-germ game-germ-four dirty-object"></span>
 
           <!-- Worms -->
-          <span class="game-worm game-worm-one"></span>
-          <span class="game-worm game-worm-two"></span>
-          <span class="game-worm game-worm-three"></span>
+          <span class="game-worm game-worm-one dirty-object"></span>
+          <span class="game-worm game-worm-two dirty-object"></span>
+          <span class="game-worm game-worm-three dirty-object"></span>
 
           <!-- Clean sparkles appear later -->
           <span class="clean-sparkle sparkle-one"></span>
@@ -161,7 +178,7 @@
       <div class="question-panel" id="questionPanel">
 
         <p class="question-count" id="questionCount">
-          Question 1 of 3
+          Easy Mode — Question 1 of 3
         </p>
 
         <h1 id="questionText">
@@ -170,15 +187,15 @@
 
         <div class="answer-grid">
 
-          <button type="button" class="answer-button answer-one" onclick="selectAnswer(0)">
+          <button type="button" class="answer-button answer-one" data-answer-index="0">
             Boiling Pot
           </button>
 
-          <button type="button" class="answer-button answer-two" onclick="selectAnswer(1)">
+          <button type="button" class="answer-button answer-two" data-answer-index="1">
             Sand Filter
           </button>
 
-          <button type="button" class="answer-button answer-three" onclick="selectAnswer(2)">
+          <button type="button" class="answer-button answer-three" data-answer-index="2">
             Open Bucket
           </button>
 
@@ -188,232 +205,493 @@
           Choose the best solution.
         </p>
 
+        <p class="milestone-text" id="milestoneText"></p>
+
       </div>
 
     </section>
 
+    <!-- Gameplay footer -->
+    <footer class="game-footer">
+
+      <p class="game-footer-title">
+        Free Water Game
+      </p>
+
+      <nav class="game-footer-links">
+        <a href="index.html">Home</a>
+        <a href="game.html">Restart</a>
+        <a href="https://www.charitywater.org/" target="_blank">Charity Water</a>
+        <a href="https://www.charitywater.org/donate" target="_blank">Donate</a>
+      </nav>
+
+    </footer>
+
   </div>
 
-  <!-- JavaScript file -->
+  <!-- Gameplay JavaScript is inside this file so the buttons work reliably -->
   <script>
-  console.log("GAME PAGE SCRIPT IS RUNNING");
+    console.log("GAME PAGE SCRIPT IS RUNNING");
 
-  let waterUnlocked = 0;
-  let playerLevel = Number(localStorage.getItem("playerLevel")) || 0;
+let waterUnlocked = 0;
+let playerLevel = Number(localStorage.getItem("playerLevel")) || 0;
 
-  const gameWaterFill = document.getElementById("gameWaterFill");
-  const gameWaterText = document.getElementById("gameWaterText");
-  const questionPanel = document.getElementById("questionPanel");
-  const questionCount = document.getElementById("questionCount");
-  const questionText = document.getElementById("questionText");
-  const feedbackText = document.getElementById("feedbackText");
-  const answerButtons = document.querySelectorAll(".answer-button");
-  const pondArea = document.getElementById("pondArea");
-  const villagers = document.getElementById("villagers");
-  const fireworks = document.getElementById("fireworks");
+let selectedDifficulty = "easy";
+let currentQuestionIndex = 0;
+let correctAnswers = 0;
+let waitingForNextQuestion = false;
+let triggeredMilestones = [];
 
-  const questions = [
+const gameWaterFill = document.getElementById("gameWaterFill");
+const gameWaterText = document.getElementById("gameWaterText");
+const questionPanel = document.getElementById("questionPanel");
+const questionCount = document.getElementById("questionCount");
+const questionText = document.getElementById("questionText");
+const feedbackText = document.getElementById("feedbackText");
+const milestoneText = document.getElementById("milestoneText");
+const answerButtons = document.querySelectorAll(".answer-button");
+const pondArea = document.getElementById("pondArea");
+const villagers = document.getElementById("villagers");
+const fireworks = document.getElementById("fireworks");
+const difficultyButtons = document.querySelectorAll(".difficulty-mini-button");
+const dirtyObjects = document.querySelectorAll(".dirty-object");
+
+const difficultySettings = {
+  easy: {
+    name: "Easy",
+    gallons: [50, 50, 50],
+    goal: 70,
+    wrongPenalty: 0
+  },
+
+  normal: {
+    name: "Normal",
+    gallons: [35, 35, 30],
+    goal: 100,
+    wrongPenalty: 0
+  },
+
+  hard: {
+    name: "Hard",
+    gallons: [34, 33, 33],
+    goal: 100,
+    wrongPenalty: 10
+  }
+};
+
+const questionSets = {
+  easy: [
+    {
+      question: "Which water looks safest to drink?",
+      answers: ["Clear Water", "Muddy Water", "Trash Water"],
+      correctAnswer: "Clear Water",
+      feedback: "Correct! Clear water is usually safer than muddy or dirty water."
+    },
+
+    {
+      question: "What should clean water be stored in?",
+      answers: ["Covered Container", "Open Bowl", "Dirty Bucket"],
+      correctAnswer: "Covered Container",
+      feedback: "Correct! A covered container helps keep clean water safe."
+    },
+
+    {
+      question: "Why do families need clean water?",
+      answers: ["To Stay Healthy", "To Make Water Dirty", "To Waste It"],
+      correctAnswer: "To Stay Healthy",
+      feedback: "Correct! Clean water helps people stay healthy."
+    }
+  ],
+
+  normal: [
     {
       question: "The water has visible dirt and mud. What should the team use first?",
       answers: ["Boiling Pot", "Sand Filter", "Open Bucket"],
       correctAnswer: "Sand Filter",
-      feedback: "Correct! A sand filter removes dirt and mud from the water.",
-      gallonsEarned: 35
+      feedback: "Correct! A sand filter removes dirt and mud from the water."
     },
+
     {
       question: "The water looks clearer, but germs may still be inside. What should the team use next?",
       answers: ["Chlorine Tablets", "More Dirt", "Broken Pipe"],
       correctAnswer: "Chlorine Tablets",
-      feedback: "Correct! Chlorine tablets help kill harmful germs in the water.",
-      gallonsEarned: 35
+      feedback: "Correct! Chlorine tablets help kill harmful germs in the water."
     },
+
     {
       question: "The water is clean now. What keeps it safe for families to drink later?",
       answers: ["Open Bowl", "Covered Container", "Dirty Hands"],
       correctAnswer: "Covered Container",
-      feedback: "Correct! A covered container keeps clean water safe.",
-      gallonsEarned: 30
+      feedback: "Correct! A covered container keeps clean water safe."
     }
-  ];
+  ],
 
-  let currentQuestionIndex = 0;
-  let correctAnswers = 0;
-  let waitingForNextQuestion = false;
+  hard: [
+    {
+      question: "A community has muddy water with large particles. What is the best first step before disinfection?",
+      answers: ["Filter The Water", "Add Chlorine First", "Leave It Open"],
+      correctAnswer: "Filter The Water",
+      feedback: "Correct! Filtering first removes dirt and particles before disinfecting the water."
+    },
 
-  function saveProgress() {
-    localStorage.setItem("waterUnlocked", waterUnlocked);
-    localStorage.setItem("playerLevel", playerLevel);
+    {
+      question: "Why is water that looks clear still not always safe to drink?",
+      answers: ["It Can Still Have Germs", "Clear Water Is Always Safe", "It Has No Minerals"],
+      correctAnswer: "It Can Still Have Germs",
+      feedback: "Correct! Clear water can still contain bacteria, viruses, or parasites."
+    },
+
+    {
+      question: "After water is cleaned, what helps prevent recontamination?",
+      answers: ["Safe Storage", "Touching It With Dirty Hands", "Leaving It Uncovered"],
+      correctAnswer: "Safe Storage",
+      feedback: "Correct! Safe storage helps keep clean water from becoming contaminated again."
+    }
+  ]
+};
+
+const milestones = [
+  {
+    amount: 35,
+    message: "Milestone reached: The first layer of dirt is being removed!"
+  },
+
+  {
+    amount: 70,
+    message: "Milestone reached: The water is almost safe!"
+  },
+
+  {
+    amount: 100,
+    message: "Milestone reached: Clean water unlocked for the community!"
+  }
+];
+
+function getCurrentQuestions() {
+  return questionSets[selectedDifficulty];
+}
+
+function playTone(frequency, duration, type) {
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.type = type;
+    oscillator.frequency.value = frequency;
+
+    gainNode.gain.setValueAtTime(0.12, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.001,
+      audioContext.currentTime + duration
+    );
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + duration);
+  } catch (error) {
+    console.log("Sound could not play:", error);
+  }
+}
+
+function playCorrectSound() {
+  playTone(620, 0.14, "sine");
+
+  setTimeout(function() {
+    playTone(820, 0.14, "sine");
+  }, 120);
+}
+
+function playWrongSound() {
+  playTone(220, 0.18, "sawtooth");
+
+  setTimeout(function() {
+    playTone(160, 0.18, "sawtooth");
+  }, 120);
+}
+
+function playWinSound() {
+  playTone(520, 0.12, "sine");
+
+  setTimeout(function() {
+    playTone(680, 0.12, "sine");
+  }, 130);
+
+  setTimeout(function() {
+    playTone(880, 0.2, "sine");
+  }, 260);
+}
+
+function saveProgress() {
+  localStorage.setItem("waterUnlocked", waterUnlocked);
+  localStorage.setItem("playerLevel", playerLevel);
+}
+
+function updateGameplayMeter() {
+  let visibleWaterAmount = waterUnlocked === 0 ? 12 : waterUnlocked;
+
+  if (visibleWaterAmount > 100) {
+    visibleWaterAmount = 100;
   }
 
-  function updateGameplayMeter() {
-    let visibleWaterAmount = waterUnlocked === 0 ? 12 : waterUnlocked;
+  gameWaterFill.style.width = visibleWaterAmount + "%";
+  gameWaterText.textContent = waterUnlocked + " Gallons";
+}
 
-    if (visibleWaterAmount > 100) {
-      visibleWaterAmount = 100;
-    }
+function loadQuestion() {
+  waitingForNextQuestion = false;
 
-    gameWaterFill.style.width = visibleWaterAmount + "%";
-    gameWaterText.textContent = waterUnlocked + " Gallons";
+  const currentQuestions = getCurrentQuestions();
+  const currentQuestion = currentQuestions[currentQuestionIndex];
+
+  questionCount.textContent =
+    difficultySettings[selectedDifficulty].name +
+    " Mode — Question " +
+    (currentQuestionIndex + 1) +
+    " of " +
+    currentQuestions.length;
+
+  questionText.textContent = currentQuestion.question;
+  feedbackText.textContent = "Choose the best solution.";
+
+  answerButtons.forEach(function(button, index) {
+    button.textContent = currentQuestion.answers[index];
+    button.disabled = false;
+    button.style.display = "block";
+    button.classList.remove("correct-choice");
+    button.classList.remove("wrong-choice");
+    button.dataset.answerIndex = index;
+  });
+}
+
+function updateSceneProgress() {
+  pondArea.classList.remove("cleaning-one", "cleaning-two", "cleaning-three");
+  villagers.classList.remove("hopeful", "happy", "celebrating");
+
+  if (waterUnlocked >= 35 && waterUnlocked < 70) {
+    pondArea.classList.add("cleaning-one");
+    villagers.classList.add("hopeful");
   }
 
-  function loadQuestion() {
-    waitingForNextQuestion = false;
-
-    const currentQuestion = questions[currentQuestionIndex];
-
-    questionCount.textContent = "Question " + (currentQuestionIndex + 1) + " of " + questions.length;
-    questionText.textContent = currentQuestion.question;
-    feedbackText.textContent = "Choose the best solution.";
-
-    answerButtons.forEach(function(button, index) {
-      button.textContent = currentQuestion.answers[index];
-      button.disabled = false;
-      button.style.display = "block";
-      button.classList.remove("correct-choice");
-      button.classList.remove("wrong-choice");
-    });
+  if (waterUnlocked >= 70 && waterUnlocked < 100) {
+    pondArea.classList.add("cleaning-two");
+    villagers.classList.add("happy");
   }
 
-  function updateSceneProgress() {
-    pondArea.classList.remove("cleaning-one", "cleaning-two", "cleaning-three");
-    villagers.classList.remove("hopeful", "happy", "celebrating");
-
-    if (waterUnlocked >= 35 && waterUnlocked < 70) {
-      pondArea.classList.add("cleaning-one");
-      villagers.classList.add("hopeful");
-    }
-
-    if (waterUnlocked >= 70 && waterUnlocked < 100) {
-      pondArea.classList.add("cleaning-two");
-      villagers.classList.add("happy");
-    }
-
-    if (waterUnlocked >= 100) {
-      pondArea.classList.add("cleaning-three");
-      villagers.classList.add("celebrating");
-    }
-  }
-
-  function cheerPeopleBriefly() {
+  if (waterUnlocked >= 100) {
+    pondArea.classList.add("cleaning-three");
     villagers.classList.add("celebrating");
+  }
+}
 
-    setTimeout(function() {
-      if (waterUnlocked < 100) {
-        villagers.classList.remove("celebrating");
-        updateSceneProgress();
+function updateDirtyObjects() {
+  dirtyObjects.forEach(function(object) {
+    object.classList.remove("removed-dirty-object");
+  });
+
+  if (correctAnswers >= 1) {
+    for (let i = 0; i < 4; i++) {
+      if (dirtyObjects[i]) {
+        dirtyObjects[i].classList.add("removed-dirty-object");
       }
-    }, 900);
-  }
-
-  function shakeQuestionPanel() {
-    questionPanel.classList.remove("wrong-shake");
-
-    setTimeout(function() {
-      questionPanel.classList.add("wrong-shake");
-    }, 10);
-  }
-
-  function goToNextQuestion() {
-    currentQuestionIndex++;
-
-    if (currentQuestionIndex < questions.length) {
-      loadQuestion();
-    } else {
-      finishGame();
     }
   }
 
-  function selectAnswer(answerIndex) {
-    console.log("Button clicked:", answerIndex);
-
-    if (waitingForNextQuestion) {
-      return;
+  if (correctAnswers >= 2) {
+    for (let i = 4; i < 9; i++) {
+      if (dirtyObjects[i]) {
+        dirtyObjects[i].classList.add("removed-dirty-object");
+      }
     }
+  }
 
-    waitingForNextQuestion = true;
-
-    const currentQuestion = questions[currentQuestionIndex];
-    const selectedAnswer = currentQuestion.answers[answerIndex];
-    const selectedButton = answerButtons[answerIndex];
-
-    answerButtons.forEach(function(button) {
-      button.disabled = true;
+  if (correctAnswers >= 3) {
+    dirtyObjects.forEach(function(object) {
+      object.classList.add("removed-dirty-object");
     });
+  }
+}
 
-    if (selectedAnswer === currentQuestion.correctAnswer) {
-      selectedButton.classList.add("correct-choice");
-
-      correctAnswers++;
-      waterUnlocked += currentQuestion.gallonsEarned;
-
-      if (waterUnlocked > 100) {
-        waterUnlocked = 100;
-      }
-
-      feedbackText.textContent = currentQuestion.feedback;
-
-      saveProgress();
-      updateGameplayMeter();
-      updateSceneProgress();
-      cheerPeopleBriefly();
-
-      setTimeout(function() {
-        goToNextQuestion();
-      }, 1400);
-
-    } else {
-      selectedButton.classList.add("wrong-choice");
-
-      feedbackText.textContent = "Wrong choice. The water stays the same. Moving to the next problem.";
-
-      updateGameplayMeter();
-      updateSceneProgress();
-      shakeQuestionPanel();
-
-      setTimeout(function() {
-        goToNextQuestion();
-      }, 1200);
-    }
+function checkMilestones() {
+  if (!milestoneText) {
+    return;
   }
 
-  function finishGame() {
+  milestones.forEach(function(milestone) {
+    if (
+      waterUnlocked >= milestone.amount &&
+      !triggeredMilestones.includes(milestone.amount)
+    ) {
+      triggeredMilestones.push(milestone.amount);
+      milestoneText.textContent = milestone.message;
+    }
+  });
+}
+
+function cheerPeopleBriefly() {
+  villagers.classList.add("celebrating");
+
+  setTimeout(function() {
+    if (waterUnlocked < 100) {
+      villagers.classList.remove("celebrating");
+      updateSceneProgress();
+    }
+  }, 900);
+}
+
+function shakeQuestionPanel() {
+  questionPanel.classList.remove("wrong-shake");
+
+  setTimeout(function() {
+    questionPanel.classList.add("wrong-shake");
+  }, 10);
+}
+
+function goToNextQuestion() {
+  currentQuestionIndex++;
+
+  const currentQuestions = getCurrentQuestions();
+
+  if (currentQuestionIndex < currentQuestions.length) {
+    loadQuestion();
+  } else {
+    finishGame();
+  }
+}
+
+function setDifficulty(difficulty) {
+  selectedDifficulty = difficulty;
+
+  difficultyButtons.forEach(function(button) {
+    button.classList.remove("active-difficulty");
+
+    if (button.dataset.difficulty === difficulty) {
+      button.classList.add("active-difficulty");
+    }
+  });
+
+  restartGame();
+}
+
+function selectAnswer(answerIndex) {
+  if (waitingForNextQuestion) {
+    return;
+  }
+
+  waitingForNextQuestion = true;
+
+  const currentQuestions = getCurrentQuestions();
+  const currentQuestion = currentQuestions[currentQuestionIndex];
+  const selectedAnswer = currentQuestion.answers[answerIndex];
+  const selectedButton = answerButtons[answerIndex];
+
+  answerButtons.forEach(function(button) {
+    button.disabled = true;
+  });
+
+  if (selectedAnswer === currentQuestion.correctAnswer) {
+    selectedButton.classList.add("correct-choice");
+
+    correctAnswers++;
+
+    waterUnlocked += difficultySettings[selectedDifficulty].gallons[currentQuestionIndex];
+
+    if (waterUnlocked > 100) {
+      waterUnlocked = 100;
+    }
+
+    feedbackText.textContent = currentQuestion.feedback;
+
+    playCorrectSound();
+    saveProgress();
+    updateGameplayMeter();
+    updateSceneProgress();
+    updateDirtyObjects();
+    checkMilestones();
+    cheerPeopleBriefly();
+
+    setTimeout(function() {
+      goToNextQuestion();
+    }, 1500);
+
+    return;
+  }
+
+  selectedButton.classList.add("wrong-choice");
+
+  waterUnlocked -= difficultySettings[selectedDifficulty].wrongPenalty;
+
+  if (waterUnlocked < 0) {
+    waterUnlocked = 0;
+  }
+
+  if (difficultySettings[selectedDifficulty].wrongPenalty > 0) {
+    feedbackText.textContent = "Wrong choice. Hard Mode penalty: 10 gallons lost.";
+  } else {
+    feedbackText.textContent = "Wrong choice. The water does not improve. Moving to the next problem.";
+  }
+
+  playWrongSound();
+  updateGameplayMeter();
+  updateSceneProgress();
+  updateDirtyObjects();
+  shakeQuestionPanel();
+
+  setTimeout(function() {
+    goToNextQuestion();
+  }, 1400);
+}
+
+function finishGame() {
   answerButtons.forEach(function(button) {
     button.style.display = "none";
   });
 
-  if (correctAnswers === 3) {
+  const goal = difficultySettings[selectedDifficulty].goal;
+
+  if (waterUnlocked >= goal) {
     waterUnlocked = 100;
     playerLevel = 1;
 
     saveProgress();
     updateGameplayMeter();
     updateSceneProgress();
+    updateDirtyObjects();
+    checkMilestones();
+    playWinSound();
 
     if (fireworks) {
       fireworks.classList.add("show-fireworks");
     }
 
     questionCount.textContent = "Mission Complete";
-    questionText.textContent = "You cleaned the water and saved the community!";
+    questionText.textContent = "You cleaned the water and helped the community!";
+
     feedbackText.innerHTML = `
-      Perfect score! You unlocked 100 gallons of clean water.
+      You completed ${difficultySettings[selectedDifficulty].name} Mode and unlocked clean water.
       <br><br>
       <button type="button" class="try-again-button" onclick="restartGame()">
         Play Again
       </button>
     `;
 
-  } else {
-    questionCount.textContent = "Mission Finished";
-    questionText.textContent = "You helped the team, but the water is not fully clean yet.";
-    feedbackText.innerHTML = `
-      You got ${correctAnswers} out of 3 correct. Try again to fully clean the water.
-      <br><br>
-      <button type="button" class="try-again-button" onclick="restartGame()">
-        Try Again
-      </button>
-    `;
+    return;
   }
+
+  questionCount.textContent = "Mission Finished";
+  questionText.textContent = "You helped the team, but the water is not fully clean yet.";
+
+  feedbackText.innerHTML = `
+    You got ${correctAnswers} out of 3 correct and unlocked ${waterUnlocked} gallons.
+    <br>
+    Try again or choose a different difficulty.
+    <br><br>
+    <button type="button" class="try-again-button" onclick="restartGame()">
+      Try Again
+    </button>
+  `;
 }
 
 function restartGame() {
@@ -421,8 +699,13 @@ function restartGame() {
   correctAnswers = 0;
   currentQuestionIndex = 0;
   waitingForNextQuestion = false;
+  triggeredMilestones = [];
 
   localStorage.setItem("waterUnlocked", 0);
+
+  if (milestoneText) {
+    milestoneText.textContent = "";
+  }
 
   if (fireworks) {
     fireworks.classList.remove("show-fireworks");
@@ -436,6 +719,10 @@ function restartGame() {
     villagers.classList.remove("hopeful", "happy", "celebrating");
   }
 
+  dirtyObjects.forEach(function(object) {
+    object.classList.remove("removed-dirty-object");
+  });
+
   answerButtons.forEach(function(button) {
     button.style.display = "block";
     button.disabled = false;
@@ -446,9 +733,32 @@ function restartGame() {
   updateGameplayMeter();
   loadQuestion();
   updateSceneProgress();
+  updateDirtyObjects();
 }
 
+window.selectAnswer = selectAnswer;
 window.restartGame = restartGame;
-</script>
+window.setDifficulty = setDifficulty;
+
+answerButtons.forEach(function(button) {
+  button.addEventListener("click", function() {
+    const answerIndex = Number(button.dataset.answerIndex);
+    selectAnswer(answerIndex);
+  });
+});
+
+difficultyButtons.forEach(function(button) {
+  button.addEventListener("click", function() {
+    const difficulty = button.dataset.difficulty;
+    setDifficulty(difficulty);
+  });
+});
+
+updateGameplayMeter();
+loadQuestion();
+updateSceneProgress();
+updateDirtyObjects();
+  </script>
+
 </body>
 </html>

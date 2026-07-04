@@ -13,51 +13,39 @@
 
 <body>
 
-  <!-- Full home page -->
   <div class="home-page">
 
-    <!-- Yellow top navigation/status bar -->
+    <!-- Yellow home header -->
     <header class="top-nav">
 
-      <!-- Level circle -->
-      <div class="level-circle">
-        <span id="levelNumber">0</span>
-      </div>
+      <!-- Home challenge text -->
+      <p class="challenge-text">
+        Clean Water Challenge
+      </p>
 
-      <!-- Water unlocked meter -->
-      <div class="water-box">
-
-        <p class="water-label">Water Unlocked</p>
-
-        <div class="water-meter">
-
-          <!-- Water fill controlled by JavaScript -->
-          <div id="waterFill" class="water-fill"></div>
-
-          <!-- Extra animated clean water shimmer -->
-          <div class="meter-water-motion"></div>
-
-          <!-- Gallons unlocked text -->
-          <span id="waterText" class="water-text">0 Gallons</span>
-
-        </div>
-      </div>
+      <!-- Charity Water logo in the top right -->
+      <a href="https://www.charitywater.org/" target="_blank" class="home-logo-link">
+        <img src="images/charity-water-logo.png" alt="Charity Water Logo" class="home-header-logo" />
+      </a>
 
     </header>
 
-    <!-- Full underground dirty water hero area -->
+    <!-- Main underground water scene -->
     <main class="hero-area" id="waterBarrel">
 
       <!-- Top dirt layer -->
       <div class="soil-layer"></div>
 
-      <!-- Underground dirty water layer -->
+      <!-- Underground dirty water -->
       <div class="underground-water">
+
         <div class="water-wave wave-one"></div>
         <div class="water-wave wave-two"></div>
-        <div class="water-shine shine-one"></div>
-        <div class="water-shine shine-two"></div>
-        <div class="water-shine shine-three"></div>
+
+        <span class="water-shine shine-one"></span>
+        <span class="water-shine shine-two"></span>
+        <span class="water-shine shine-three"></span>
+
       </div>
 
       <!-- Dirt pieces -->
@@ -87,41 +75,30 @@
       <span class="worm worm-five"></span>
       <span class="worm worm-six"></span>
 
-      <!-- Start game button -->
+      <!-- Start gameplay button -->
       <a href="game.html" class="save-lives-button">
         Save Lives
       </a>
 
     </main>
 
-    <!-- Yellow footer -->
+    <!-- Traditional game footer -->
     <footer class="footer-bar">
 
-      <!-- Left charity water inspired badge -->
-      <div class="footer-brand footer-brand-left">
-        <div class="brand-icon water-can-icon">
-          <span class="can-handle"></span>
-          <span class="can-spout"></span>
-        </div>
-
-        <div class="brand-words">
-          <span>CHARITY</span>
-          <strong>WATER</strong>
-        </div>
+      <div class="footer-game-info">
+        <h2>Free Water</h2>
+        <p>Clean water. Save lives. Learn. Play. Help.</p>
       </div>
 
-      <!-- Right charity water inspired badge -->
-      <div class="footer-brand footer-brand-right">
-        <div class="brand-circle">
-          <span>CLEAN</span>
-          <strong>WATER</strong>
-        </div>
+      <nav class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="game.html">Start Mission</a>
+        <a href="https://www.charitywater.org/" target="_blank">Charity Water</a>
+      </nav>
 
-        <div class="brand-words right-words">
-          <span>CHARITY</span>
-          <strong>WATER</strong>
-        </div>
-      </div>
+      <p class="footer-copy">
+        © 2026 Free Water Game
+      </p>
 
     </footer>
 

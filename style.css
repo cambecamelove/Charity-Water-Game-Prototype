@@ -21,7 +21,6 @@ body {
 .home-page {
   min-height: 100vh;
   background: #e04b3f;
-
   display: flex;
   flex-direction: column;
 }
@@ -42,156 +41,49 @@ body {
   z-index: 20;
 }
 
-/* Level circle */
-.level-circle {
-  width: 85px;
-  height: 85px;
+/* Home challenge text */
+.challenge-text {
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  color: #111;
+}
+
+/* Top-right Charity Water logo */
+.home-logo-link {
+  width: 310px;
+  height: 105px;
 
   background: #ffffff;
   border: 5px solid #111;
-  border-radius: 50%;
+  border-radius: 24px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 44px;
-  font-weight: 900;
-}
+  padding: 4px 8px;
 
-/* Home meter wrapper */
-.water-box {
-  width: 400px;
-}
+  box-shadow: 7px 7px 0 rgba(17, 17, 17, 0.75);
 
-.water-label {
-  width: fit-content;
-  margin: 0 auto 8px;
-
-  padding: 6px 16px;
-
-  background: #ffffff;
-  border: 4px solid #111;
-  border-radius: 999px;
-
-  font-size: 15px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-
-  box-shadow: 4px 4px 0 #111;
-}
-
-/* Home meter */
-.water-meter {
-  width: 100%;
-  height: 74px;
-
-  background:
-    linear-gradient(
-      to bottom,
-      #ffffff 0%,
-      #eafaff 100%
-    );
-
-  border: 5px solid #111;
-  border-radius: 22px;
-
-  position: relative;
   overflow: hidden;
 
-  box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.7);
+  transition: 0.2s ease;
 }
 
-.water-fill {
-  height: 100%;
-  width: 0%;
-
-  background:
-    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.9), transparent 16%),
-    linear-gradient(
-      to bottom,
-      #d8fbff 0%,
-      #69dcff 35%,
-      #12b8e8 70%,
-      #008fc2 100%
-    );
-
-  position: absolute;
-  left: 0;
-  bottom: 0;
-
-  transition: width 0.7s ease;
-
-  z-index: 2;
+.home-logo-link:hover {
+  transform: translate(4px, 4px);
+  box-shadow: 3px 3px 0 rgba(17, 17, 17, 0.75);
 }
 
-.water-fill::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  left: -50%;
+.home-header-logo {
+  width: 175%;
+  height: 160%;
 
-  width: 200%;
-  height: 18px;
-
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 50%;
-
-  animation: waterWave 3s linear infinite;
-}
-
-.water-fill::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background:
-    radial-gradient(circle at 25% 65%, rgba(255, 255, 255, 0.7) 0 4px, transparent 5px),
-    radial-gradient(circle at 55% 35%, rgba(255, 255, 255, 0.55) 0 3px, transparent 4px),
-    radial-gradient(circle at 78% 72%, rgba(255, 255, 255, 0.6) 0 5px, transparent 6px);
-
-  animation: bubbleFloat 4s ease-in-out infinite;
-}
-
-.meter-water-motion {
-  position: absolute;
-  inset: 0;
-
-  background:
-    linear-gradient(
-      120deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.35) 45%,
-      transparent 70%
-    );
-
-  opacity: 0.65;
-
-  z-index: 1;
-
-  animation: cleanWaterGlow 3.5s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.water-text {
-  position: absolute;
-  inset: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 31px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  color: #111;
-
-  text-shadow:
-    1px 1px 0 rgba(255, 255, 255, 0.9),
-    0 0 10px rgba(255, 255, 255, 0.7);
-
-  z-index: 3;
+  object-fit: contain;
+  display: block;
 }
 
 /* Home underground scene */
@@ -227,7 +119,7 @@ body {
   cursor: pointer;
 }
 
-/* Soil */
+/* Soil layer */
 .soil-layer {
   position: absolute;
   top: 0;
@@ -282,7 +174,7 @@ body {
   z-index: 8;
 }
 
-/* Home water */
+/* Underground water */
 .underground-water {
   position: absolute;
   left: -5%;
@@ -364,7 +256,7 @@ body {
   animation-delay: 2.2s;
 }
 
-/* Home dirt */
+/* Dirt */
 .dirt {
   position: absolute;
 
@@ -431,7 +323,7 @@ body {
   animation-delay: 2.8s;
 }
 
-/* Home bacteria */
+/* Bacteria */
 .bacteria {
   position: absolute;
 
@@ -523,7 +415,7 @@ body {
   animation-delay: 3s;
 }
 
-/* Home worms */
+/* Worms */
 .worm {
   position: absolute;
 
@@ -668,150 +560,108 @@ body {
 
 /* Home footer */
 .footer-bar {
-  height: 125px;
-  background: #fdd835;
+  min-height: 135px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #ffe86a 0%,
+      #fdd835 100%
+    );
+
   border-top: 5px solid #111;
+
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  align-items: center;
+  gap: 24px;
+
+  padding: 24px 48px;
 
   position: relative;
   z-index: 20;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 48px;
-
   box-shadow: inset 0 8px 0 rgba(255, 255, 255, 0.28);
 }
 
-.footer-brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.footer-brand-left {
-  background: #ffffff;
-  border: 4px solid #111;
-  border-radius: 20px;
-  padding: 13px 20px;
-  box-shadow: 6px 6px 0 #111;
-}
-
-.water-can-icon {
-  width: 54px;
-  height: 43px;
-
-  background: #111;
-  border-radius: 9px 9px 14px 14px;
-
-  position: relative;
-}
-
-.can-handle {
-  position: absolute;
-  right: -14px;
-  top: 8px;
-
-  width: 20px;
-  height: 23px;
-
-  border: 5px solid #111;
-  border-left: none;
-  border-radius: 0 12px 12px 0;
-}
-
-.can-spout {
-  position: absolute;
-  left: -21px;
-  top: 3px;
-
-  width: 26px;
-  height: 11px;
-
-  background: #111;
-  transform: rotate(-20deg);
-  border-radius: 999px;
-}
-
-.water-can-icon::after {
-  content: "";
-  position: absolute;
-  left: 16px;
-  top: 10px;
-
-  width: 18px;
-  height: 22px;
-
-  background: #fdd835;
-  border-radius: 50% 50% 55% 55%;
-}
-
-.brand-words {
-  display: flex;
-  flex-direction: column;
-  line-height: 0.9;
-}
-
-.brand-words span {
-  font-size: 18px;
+.footer-game-info h2 {
+  font-size: 32px;
   font-weight: 900;
-  letter-spacing: 1.5px;
-}
-
-.brand-words strong {
-  font-size: 30px;
-  font-weight: 900;
+  text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-.footer-brand-right {
-  background: #111;
-  color: #ffffff;
+.footer-game-info p {
+  margin-top: 6px;
 
-  border: 4px solid #ffffff;
-  border-radius: 999px;
-
-  padding: 10px 22px 10px 10px;
-
-  box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.35);
+  font-size: 16px;
+  font-weight: 800;
 }
 
-.brand-circle {
-  width: 66px;
-  height: 66px;
-
-  background: #fdd835;
-  color: #111;
-
-  border: 4px solid #ffffff;
-  border-radius: 50%;
-
+.footer-links {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 16px;
 
-  line-height: 0.85;
+  flex-wrap: wrap;
 }
 
-.brand-circle span {
-  font-size: 11px;
+.footer-links a {
+  color: #111;
+
+  border: 4px solid #111;
+  border-radius: 999px;
+
+  padding: 10px 18px;
+
+  font-size: 15px;
   font-weight: 900;
-  text-transform: uppercase;
+  text-decoration: none;
+
+  box-shadow: 4px 4px 0 #111;
+
+  transition: 0.2s ease;
 }
 
-.brand-circle strong {
-  font-size: 17px;
+.footer-links a:nth-child(1) {
+  background:
+    linear-gradient(
+      to bottom,
+      #ffb2a8,
+      #ff6f61
+    );
+}
+
+.footer-links a:nth-child(2) {
+  background:
+    linear-gradient(
+      to bottom,
+      #a8f0ff,
+      #38c7ef
+    );
+}
+
+.footer-links a:nth-child(3) {
+  background:
+    linear-gradient(
+      to bottom,
+      #ffe680,
+      #f4b942
+    );
+}
+
+.footer-links a:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 #111;
+  filter: brightness(1.05);
+}
+
+.footer-copy {
+  justify-self: end;
+
+  font-size: 15px;
   font-weight: 900;
-}
-
-.right-words span {
-  font-size: 16px;
-}
-
-.right-words strong {
-  font-size: 26px;
 }
 
 /* ===============================
@@ -830,7 +680,7 @@ body {
 
 /* Gameplay header */
 .gameplay-header {
-  height: 175px;
+  min-height: 175px;
 
   background:
     linear-gradient(
@@ -844,15 +694,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
 
-  padding: 0 58px;
+  padding: 28px 58px;
 
   position: relative;
   z-index: 100;
-}
-
-.gameplay-title-box {
-  display: none;
 }
 
 .back-home-button {
@@ -879,6 +726,53 @@ body {
 
   transform: translate(4px, 4px);
   box-shadow: 3px 3px 0 #111;
+}
+
+/* Small difficulty selector */
+.difficulty-mini {
+  background: #ffffff;
+  border: 4px solid #111;
+  border-radius: 999px;
+
+  padding: 10px 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  box-shadow: 5px 5px 0 #111;
+}
+
+.difficulty-mini span {
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.difficulty-mini-button {
+  background: #fdd835;
+  color: #111;
+
+  border: 3px solid #111;
+  border-radius: 999px;
+
+  padding: 7px 12px;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.difficulty-mini-button:hover {
+  background: #a8f0ff;
+}
+
+.difficulty-mini-button.active-difficulty {
+  background: #111;
+  color: #ffffff;
 }
 
 .gameplay-status {
@@ -1115,13 +1009,6 @@ body {
   top: 135px;
   transform: scale(0.62);
   opacity: 0.75;
-}
-
-/* Hide any old tree elements */
-.savanna-tree,
-.mock-tree,
-.game-tree {
-  display: none;
 }
 
 /* Ground */
@@ -1836,6 +1723,20 @@ body {
   animation-delay: 2s;
 }
 
+/* Dirty objects disappear through interaction */
+.dirty-object {
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease,
+    filter 0.45s ease;
+}
+
+.removed-dirty-object {
+  opacity: 0 !important;
+  transform: scale(0.2) rotate(20deg) !important;
+  filter: blur(2px);
+}
+
 /* Hide dirty objects as water improves */
 .dirty-water-section.cleaning-one .game-dirt {
   opacity: 0.25;
@@ -1979,6 +1880,7 @@ body {
   pointer-events: auto;
 }
 
+/* Question card */
 .question-panel {
   position: relative;
 
@@ -2116,8 +2018,137 @@ body {
   font-weight: 900;
 }
 
+.milestone-text {
+  margin-top: 12px;
+
+  color: #008fc2;
+
+  font-size: 18px;
+  font-weight: 900;
+}
+
 .question-panel.wrong-shake {
   animation: gameplayWrongShakeFixed 0.35s ease-in-out;
+}
+
+/* Try Again / Play Again button */
+.try-again-button {
+  margin-top: 10px;
+  padding: 16px 34px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #a8f0ff,
+      #38c7ef
+    );
+
+  color: #111;
+
+  border: 5px solid #111;
+  border-radius: 18px;
+
+  font-size: 20px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow: 6px 6px 0 #111;
+
+  transition: 0.2s ease;
+}
+
+.try-again-button:hover {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 #111;
+  filter: brightness(1.05);
+}
+
+/* Game footer */
+.game-footer {
+  background: #fdd835;
+  border-top: 5px solid #111;
+
+  padding: 24px 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  position: relative;
+  z-index: 1000;
+}
+
+.game-footer-title {
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.game-footer-links {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.game-footer-links a {
+  color: #111;
+
+  border: 4px solid #111;
+  border-radius: 999px;
+
+  padding: 10px 18px;
+
+  font-size: 15px;
+  font-weight: 900;
+  text-decoration: none;
+
+  box-shadow: 4px 4px 0 #111;
+
+  transition: 0.2s ease;
+}
+
+.game-footer-links a:nth-child(1) {
+  background:
+    linear-gradient(
+      to bottom,
+      #ffb2a8,
+      #ff6f61
+    );
+}
+
+.game-footer-links a:nth-child(2) {
+  background:
+    linear-gradient(
+      to bottom,
+      #a8f0ff,
+      #38c7ef
+    );
+}
+
+.game-footer-links a:nth-child(3) {
+  background:
+    linear-gradient(
+      to bottom,
+      #ffe680,
+      #f4b942
+    );
+}
+
+.game-footer-links a:nth-child(4) {
+  background:
+    linear-gradient(
+      to bottom,
+      #b6ffb6,
+      #48c774
+    );
+}
+
+.game-footer-links a:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 #111;
+  filter: brightness(1.05);
 }
 
 /* ===============================
@@ -2131,40 +2162,6 @@ body {
 
   to {
     transform: translateX(50%);
-  }
-}
-
-@keyframes cleanWaterGlow {
-  0% {
-    transform: translateX(-10px);
-    opacity: 0.65;
-  }
-
-  50% {
-    transform: translateX(12px);
-    opacity: 0.95;
-  }
-
-  100% {
-    transform: translateX(-10px);
-    opacity: 0.65;
-  }
-}
-
-@keyframes bubbleFloat {
-  0% {
-    transform: translateY(0);
-    opacity: 0.6;
-  }
-
-  50% {
-    transform: translateY(-6px);
-    opacity: 0.9;
-  }
-
-  100% {
-    transform: translateY(0);
-    opacity: 0.6;
   }
 }
 
@@ -2420,38 +2417,42 @@ body {
    RESPONSIVE DESIGN
 ================================ */
 
-@media (max-width: 850px) {
+@media (max-width: 1000px) {
   .gameplay-header {
     height: auto;
     flex-direction: column;
-    gap: 20px;
-    padding: 26px;
+    gap: 22px;
+    padding: 28px 24px;
+  }
+
+  .back-home-button {
+    align-self: flex-start;
   }
 
   .gameplay-status {
-    width: 92%;
+    width: min(430px, 92vw);
   }
 
   .gameplay-scene {
-    min-height: 780px;
+    min-height: 760px;
   }
 
   .scene-sun {
-    right: 34px;
-    top: 45px;
-    transform: scale(0.78);
+    right: 45px;
+    top: 42px;
+    transform: scale(0.85);
   }
 
   .cloud-left {
-    left: 40px;
-    top: 100px;
-    transform: scale(0.72);
+    left: 45px;
+    top: 95px;
+    transform: scale(0.75);
   }
 
   .cloud-middle {
-    left: 58%;
-    top: 135px;
-    transform: translateX(-50%) scale(0.62);
+    left: 55%;
+    top: 125px;
+    transform: translateX(-50%) scale(0.65);
   }
 
   .cloud-right {
@@ -2459,25 +2460,25 @@ body {
   }
 
   .people-row {
-    top: 220px;
-    transform: translateX(-50%) scale(0.72);
+    top: 205px;
+    transform: translateX(-50%) scale(0.8);
   }
 
   .village-ground {
-    top: 390px;
+    top: 385px;
   }
 
   .dirty-water-section {
     top: 485px;
-    height: 295px;
+    height: 275px;
+  }
+
+  .question-panel {
+    width: 94vw;
   }
 
   .question-panel h1 {
-    font-size: 23px;
-  }
-
-  .answer-grid {
-    grid-template-columns: 1fr;
+    font-size: 24px;
   }
 }
 
@@ -2489,22 +2490,19 @@ body {
     padding: 25px;
   }
 
-  .level-circle {
-    width: 75px;
-    height: 75px;
-    font-size: 38px;
+  .challenge-text {
+    text-align: center;
+    font-size: 18px;
   }
 
-  .water-box {
-    width: 90%;
+  .home-logo-link {
+    width: 285px;
+    height: 92px;
   }
 
-  .water-label {
-    font-size: 13px;
-  }
-
-  .water-text {
-    font-size: 25px;
+  .home-header-logo {
+    width: 170%;
+    height: 155%;
   }
 
   .hero-area {
@@ -2521,86 +2519,163 @@ body {
     padding: 16px 34px;
   }
 
-  .bacteria {
-    width: 30px;
-    height: 30px;
-  }
-
-  .worm {
-    width: 54px;
-    height: 17px;
-  }
-
   .footer-bar {
-    height: 135px;
-    padding: 0 14px;
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 18px;
+    padding: 28px 18px;
   }
 
-  .footer-brand {
-    gap: 8px;
+  .footer-copy {
+    justify-self: center;
   }
 
-  .footer-brand-left {
-    padding: 9px 11px;
+  .footer-links {
+    gap: 12px;
   }
 
-  .water-can-icon {
-    width: 38px;
-    height: 31px;
+  .gameplay-header {
+    padding: 24px 18px;
   }
 
-  .can-handle {
-    right: -11px;
-    top: 6px;
-    width: 15px;
-    height: 18px;
-    border-width: 4px;
+  .back-home-button {
+    font-size: 20px;
+    padding: 14px 26px;
   }
 
-  .can-spout {
-    left: -15px;
-    top: 3px;
-    width: 20px;
-    height: 8px;
+  .difficulty-mini {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  .water-can-icon::after {
-    left: 11px;
-    top: 7px;
-    width: 14px;
-    height: 16px;
+  .difficulty-mini span {
+    width: 100%;
+    text-align: center;
   }
 
-  .brand-words span {
+  .difficulty-mini-button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .gameplay-label {
+    font-size: 13px;
+  }
+
+  .gameplay-meter {
+    height: 72px;
+  }
+
+  #gameWaterText {
+    font-size: 25px;
+  }
+
+  .gameplay-scene {
+    min-height: 800px;
+  }
+
+  .scene-sun {
+    right: 24px;
+    top: 36px;
+    transform: scale(0.7);
+  }
+
+  .cloud-left {
+    left: 22px;
+    top: 105px;
+    transform: scale(0.62);
+  }
+
+  .cloud-middle {
+    left: 68%;
+    top: 145px;
+    transform: translateX(-50%) scale(0.55);
+  }
+
+  .people-row {
+    width: 520px;
+    top: 250px;
+    transform: translateX(-50%) scale(0.65);
+  }
+
+  .village-ground {
+    top: 420px;
+  }
+
+  .dirty-water-section {
+    top: 520px;
+    height: 280px;
+  }
+
+  .gameplay-question-area {
+    padding: 22px 14px 34px;
+  }
+
+  .question-panel {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .question-count {
     font-size: 12px;
   }
 
-  .brand-words strong {
+  .question-panel h1 {
+    font-size: 21px;
+  }
+
+  .answer-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .answer-button {
+    min-height: 68px;
+    font-size: 17px;
+  }
+
+  .feedback-text {
+    font-size: 16px;
+  }
+
+  .milestone-text {
+    font-size: 16px;
+  }
+
+  .try-again-button {
+    width: 100%;
+    font-size: 18px;
+  }
+
+  .game-footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 18px;
+  }
+
+  .game-footer-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 430px) {
+  .gameplay-scene {
+    min-height: 760px;
+  }
+
+  .people-row {
+    transform: translateX(-50%) scale(0.55);
+  }
+
+  .dirty-water-section {
+    height: 260px;
+  }
+
+  .question-panel h1 {
     font-size: 19px;
   }
 
-  .footer-brand-right {
-    padding: 8px 12px 8px 8px;
-  }
-
-  .brand-circle {
-    width: 48px;
-    height: 48px;
-  }
-
-  .brand-circle span {
-    font-size: 8px;
-  }
-
-  .brand-circle strong {
-    font-size: 12px;
-  }
-
-  .right-words span {
-    font-size: 11px;
-  }
-
-  .right-words strong {
-    font-size: 18px;
+  .answer-button {
+    font-size: 16px;
   }
 }
